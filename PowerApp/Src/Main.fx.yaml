@@ -1,0 +1,194 @@
+Main As screen.SentimentAnalysis:
+
+    HeaderLabel1 As label:
+        Align: ="Center"
+        Color: =RGBA(255, 255, 255, 1)
+        Fill: =RGBA(0, 18, 107, 1)
+        Font: =Font.'Segoe UI'
+        FontWeight: =FontWeight.Bold
+        Height: =140
+        Size: =32
+        Text: ="Community Manager"
+        Width: =296
+        ZIndex: =1
+
+    PredictionResultLabel1 As label:
+        Font: =Font.'Segoe UI'
+        FontWeight: =FontWeight.Semibold
+        Height: =70
+        Size: =21
+        Text: ="Opinión"
+        Width: =560
+        X: =40
+        Y: =350
+        ZIndex: =2
+
+    TextInput1 As text:
+        Default: =
+        Font: =Font.'Segoe UI'
+        Height: =225
+        Mode: =TextMode.MultiLine
+        Size: =21
+        Width: =560
+        X: =40
+        Y: =411
+        ZIndex: =3
+
+    Button1 As button:
+        Height: =70
+        OnSelect: |-
+            =Set(TextInputSentiment, 'Análisis de sentimiento'.Predict(TextInput1.Text).Document.TopSentiment);
+            IfError(TextInputSentiment, Notify(FirstError.Message,NotificationType.Error))
+        RadiusBottomLeft: =5
+        RadiusBottomRight: =5
+        RadiusTopLeft: =5
+        RadiusTopRight: =5
+        Size: =24
+        Text: ="Analizar"
+        Width: =560
+        X: =40
+        Y: =671
+        ZIndex: =4
+
+    ResultContainer1 As rectangle:
+        BorderThickness: =4
+        Fill: =RGBA(215, 223, 240, 1)
+        Height: =150
+        Width: =560
+        X: =40
+        Y: =772
+        ZIndex: =5
+
+    SentimentColumnLabel1 As label:
+        Fill: =RGBA(136, 160, 209, 1)
+        Font: =Font.'Segoe UI'
+        FontWeight: =FontWeight.Semibold
+        Height: =70
+        PaddingLeft: =25
+        Size: =16
+        Text: =Upper("Opinión")
+        Width: =280
+        X: =43
+        Y: =773
+        ZIndex: =6
+
+    ConfidenceScoreColumnLabel1 As label:
+        Align: ="Right"
+        Fill: =RGBA(136, 160, 209, 1)
+        Font: =Font.'Segoe UI'
+        FontWeight: =FontWeight.Semibold
+        Height: =70
+        PaddingRight: =25
+        Size: =16
+        Text: =Upper("Confianza")
+        Width: =280
+        X: =317
+        Y: =773
+        ZIndex: =7
+
+    SentimentRowLabel1 As label:
+        Font: =Font.'Segoe UI'
+        Height: =70
+        PaddingLeft: =25
+        Size: =21
+        Text: =TextInputSentiment.Name
+        Width: =280
+        X: =43
+        Y: =849
+        ZIndex: =8
+
+    ConfidenceScoreResultRowLabel1 As label:
+        Align: ="Right"
+        Font: =Font.'Segoe UI'
+        Height: =70
+        PaddingRight: =25
+        Size: =21
+        Text: =TextInputSentiment.Confidence * 100 & " % "
+        Visible: =!IsBlank(TextInputSentiment.Confidence)
+        Width: =280
+        X: =317
+        Y: =849
+        ZIndex: =9
+
+    Image1 As image:
+        Height: =140
+        Image: ='hotels-logo'
+        Width: =342
+        X: =296
+        ZIndex: =13
+
+    Button2 As button:
+        Height: =70
+        OnSelect: |-
+            =If(
+                Trim(TextInput2.Text) = "" || Trim(TextInput1.Text) = "",
+                Notify(
+                    "Valoramos su tiempo, pero para poder continuar necesitamos que por favor complete tanto el campo huésped como opinión",
+                    NotificationType.Error
+                ),
+                Collect(
+                    ListaOpiniones,
+                    {
+                        huesped: TextInput2.Text,
+                        Fecha: DatePicker1.SelectedDate,
+                        Opinion: TextInputSentiment.Name,
+                        Confianza: TextInputSentiment.Confidence * 100
+                    }
+                );
+                Reset(TextInput2);
+                Reset(TextInput1)
+            )
+        Size: =24
+        Text: ="Guardar"
+        Width: =274
+        X: =43
+        Y: =1014
+        ZIndex: =19
+
+    Button2_1 As button:
+        Height: =70
+        OnSelect: =Navigate(Screen2)
+        Size: =24
+        Text: ="Opiniones"
+        Width: =263
+        X: =337
+        Y: =1014
+        ZIndex: =20
+
+    Label1 As label:
+        Height: =70
+        Size: =21
+        Text: |-
+            ="Huesped:"
+        Width: =182
+        X: =40
+        Y: =258
+        ZIndex: =21
+
+    Label1_1 As label:
+        Height: =70
+        Size: =21
+        Text: |-
+            ="Fecha:"
+        Width: =178
+        X: =40
+        Y: =177
+        ZIndex: =22
+
+    TextInput2 As text:
+        Default: =
+        Height: =70
+        Size: =21
+        Width: =391
+        X: =209
+        Y: =258
+        ZIndex: =23
+
+    DatePicker1 As datepicker:
+        Height: =70
+        Size: =24
+        Width: =391
+        X: =209
+        Y: =177
+        ZIndex: =24
+
